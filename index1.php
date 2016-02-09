@@ -1,9 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php require 'connect.php'; 
-ob_start();
-session_start();
-?>
+<?php require 'connect.php'; ?>
 <head>
         <title>Shopping</title>
         <meta charset="utf-8">
@@ -22,11 +19,7 @@ session_start();
         <script type="text/javascript" src="http://arrow.scrolltotop.com/arrow6.js"></script>
         
 </head>
-<?php
-$query2 = "SELECT id_card FROM cart";
-$query_run2 = mysql_query($query2);
-$cart_total = mysql_num_rows($query_run2);
-?>
+
 <body id="home" data-spy="scroll" data-target=".navbar" data-offset="50">
 <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container-fluid">
@@ -42,7 +35,7 @@ $cart_total = mysql_num_rows($query_run2);
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#">Home</a></li>
         <li><a href="#">About Us</a></li>
-        <li><a href="cart.php" target="_blank">Cart <span class="badge"><?php echo $cart_total ?></span></a></li>
+        <li><a href="cart.php" target="_blank">Cart <span class="badge"><div id="cart_items">1</div></span></a></li>
       </ul>
     </div>
   </div>
@@ -57,73 +50,111 @@ $cart_total = mysql_num_rows($query_run2);
 </div>
 </div>
 
-<div class="design_grid container-fluid text-center" style="padding-top:20px">
-  <div class="row text-center gall">
+
 <?php
-$root_path = 'images/';
 $query = "SELECT product_name,price,profile_pic FROM products ORDER BY price DESC ";
 $query_run = mysql_query($query);
 $i = -1;
-$num_rows = mysql_num_rows($query_run);
 if(mysql_num_rows($query_run) >= 1){
   while ($query_row = mysql_fetch_assoc($query_run)) {
     $i++;
      $profile_pic[$i]['profile_pic'] = $query_row['profile_pic'];
      $product_name[$i]['product_name'] = $query_row['product_name'];
      $price[$i]['price'] = $query_row['price'];
-     ?>
-<div class="col-sm-3">
+     
+  }
+}else{
+  $no_res = 'No Results Found!!';
+}
+//echo '<pre>';print_r($product_name);exit;
+ $root_path = 'images/';
+?>
+
+<div class="design_grid container-fluid text-center" style="padding-top:20px">
+  <div class="row text-center">
+    <div class="col-sm-3">
     <form action="index.php" method="post">
       <div class="thumbnail">
-        <img class="fancybox" src=<?php echo $root_path.$profile_pic[$i]['profile_pic'] ;?> alt="Paris" <?php echo "title='".$product_name[$i]['product_name']. "'" ?> width="400" height="300">
-        <p><strong><?php echo $product_name[$i]['product_name'] ;?></strong></p>
-        <p><?php echo 'Price: '.$price[$i]['price'] ;?></p>
-        <input type="text" <?php echo "name='quantity_".$i. "'" ?> value="1" size="2" style="display:none" /><input type="submit" class="btn" value="Add to cart"/>
+        <img class="fancybox" src=<?php echo $root_path.$profile_pic[0]['profile_pic'] ;?> alt="Paris" width="400" height="300">
+        <p><strong><?php echo $product_name[0]['product_name'] ;?></strong></p>
+        <p><?php echo 'Price: '.$price[0]['price'] ;?></p>
+        <input type="text" name="quantity" value="1" size="4" /><input type="submit" class="btn" value="Add to cart"/>
       </div>
-      
-      </form>
-    </div>
-
-
-<?php
-  }
-}
- 
-?>
-<?php
-if(isset($_POST['quantity_0']) && (!empty($_POST['quantity_0']))){
- echo $quantity = $_POST['quantity_0'];
+      <?php
+if(isset($_POST['quantity']) && (!empty($_POST['quantity']))){
+ echo $quantity = $_POST['quantity'];
  echo $name = $product_name[0]['product_name'];
  echo $prices = $price[0]['price'];
  echo $profile_pics = $profile_pic[0]['profile_pic'];
  $query2 = "INSERT INTO cart (product_name,price,profile_pic,quantity) VALUES('".$name."','".$prices."','".$profile_pics."','".$quantity."') ";
 $query_run2 = mysql_query($query2);
-header('Location:index.php');
 }
-if(isset($_POST['quantity_1']) && (!empty($_POST['quantity_1']))){
- echo $quantity = $_POST['quantity_1'];
+ ?>
+      </form>
+    </div>
+    <div class="col-sm-3">
+    <form action="index.php" method="post">
+      <div class="thumbnail">
+        <img class="fancybox" src=<?php echo $root_path.$profile_pic[1]['profile_pic'] ;?> alt="Paris" width="400" height="300">
+        <p><strong><?php echo $product_name[1]['product_name'] ;?></strong></p>
+        <p><?php echo 'Price: '.$price[1]['price'] ;?></p>
+        <input type="text" name="quantity1" value="1" size="4" /><input type="submit" class="btn" value="Add to cart"/>
+      </div>
+      <?php
+if(isset($_POST['quantity1']) && (!empty($_POST['quantity1']))){
+ echo $quantity = $_POST['quantity1'];
  echo $name = $product_name[1]['product_name'];
  echo $prices = $price[1]['price'];
  echo $profile_pics = $profile_pic[1]['profile_pic'];
  $query2 = "INSERT INTO cart (product_name,price,profile_pic,quantity) VALUES('".$name."','".$prices."','".$profile_pics."','".$quantity."') ";
 $query_run2 = mysql_query($query2);
-header('Location:index.php');
 }
-
-if(isset($_POST['quantity_2']) && (!empty($_POST['quantity_2']))){
- echo $quantity = $_POST['quantity_2'];
+ ?>
+      </form>
+    </div>
+    <div class="col-sm-3">
+    <form action="index.php" method="post">
+      <div class="thumbnail">
+        <img class="fancybox" src=<?php echo $root_path.$profile_pic[2]['profile_pic'] ;?> alt="Paris" width="400" height="300">
+        <p><strong><?php echo $product_name[2]['product_name'] ;?></strong></p>
+        <p><?php echo 'Price: '.$price[2]['price'] ;?></p>
+        <input type="text" name="quantity2" value="1" size="4" /><input type="submit" class="btn" value="Add to cart"/>
+      </div>
+      <?php
+if(isset($_POST['quantity2']) && (!empty($_POST['quantity2']))){
+ echo $quantity = $_POST['quantity2'];
  echo $name = $product_name[2]['product_name'];
  echo $prices = $price[2]['price'];
  echo $profile_pics = $profile_pic[2]['profile_pic'];
  $query2 = "INSERT INTO cart (product_name,price,profile_pic,quantity) VALUES('".$name."','".$prices."','".$profile_pics."','".$quantity."') ";
 $query_run2 = mysql_query($query2);
-header('Location:index.php');
 }
  ?>
+      </form>
+    </div>
+    <div class="col-sm-3">
+    <form action="index.php" method="post">
+      <div class="thumbnail">
+        <img class="fancybox" src=<?php echo $root_path.$profile_pic[3]['profile_pic'] ;?> alt="Paris" width="400" height="300">
+        <p><strong><?php echo $product_name[3]['product_name'] ;?></strong></p>
+        <p><?php echo 'Price: '.$price[3]['price'] ;?></p>
+        <input type="text" name="quantity2" value="1" size="4" /><input type="submit" class="btn" value="Add to cart"/>
+      </div>
+      <?php
+if(isset($_POST['quantity2']) && (!empty($_POST['quantity2']))){
+ echo $quantity = $_POST['quantity2'];
+ echo $name = $product_name[3]['product_name'];
+ echo $prices = $price[3]['price'];
+ echo $profile_pics = $profile_pic[3]['profile_pic'];
+ $query2 = "INSERT INTO cart (product_name,price,profile_pic,quantity) VALUES('".$name."','".$prices."','".$profile_pics."','".$quantity."') ";
+$query_run2 = mysql_query($query2);
+}
+ ?>
+      </form>
+    </div>
 
-    
+  </div>
 
-</div>
 </div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>

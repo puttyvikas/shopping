@@ -114,3 +114,6 @@ box-shadow: 0 1px 7px rgba(0,0,0,0.6);
   color: white;
   background: #337AB7;
 }
+.gall input[type="text"]{
+  height: 38px;
+}
